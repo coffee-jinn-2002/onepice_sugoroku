@@ -1,0 +1,48 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <title>スゴロク</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel="stylesheet" media="screen" href="{% static 'css/style.css' %}">
+    <script src="https://cdn.jsdelivr.net/npm/axios@0.21.1/dist/axios.min.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <h1>ワンピースすごろく</h1>
+      <table class="table table-bordered mt-4">
+        <tbody>
+          <tr class="table-success">
+            <td>現在のターン</td>
+            <td>{% verbatim %}{{ isPlayerTurn ? 'プレイヤー' : 'CPU' }}{% endverbatim %}</td>
+          </tr>
+          <tr class="table-primary">
+            <td>プレイヤーの位置</td>
+            <td>{% verbatim %}{{ playerPosition }}{% endverbatim %}</td>
+          </tr>
+          <tr class="table-secondary">
+            <td>CPUの位置</td>
+            <td>{% verbatim %}{{ cpuPosition }}{% endverbatim %}</td>
+          </tr>
+          <tr class="table-info">
+            <td>{% verbatim %}{{ isPlayerTurn ? 'CPU' : 'プレイヤー' }}の出た目{% endverbatim %}</td>
+            <td>{% verbatim %}{{ dice }}{% endverbatim %}</td>
+          </tr>
+        </tbody>
+      </table>
+      <button v-if="isPlayerTurn && !isGameOver" @click="rollDice" class="btn btn-primary">自分のターン</button>
+      <button v-if="!isPlayerTurn && !isGameOver" @click="cpuRollDice" class="btn btn-secondary">相手のターン</button>
+      <div class="mt-3">
+        <div v-for="cell in cells" :class="['cell', { events: events.includes(cell) }]">
+          {{ cell}}
+          <img v-for="character in characters" v-if="cell === character.position" :src="character.image" :alt="character.name">
+        </div>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script src="{% static 'js/index.js' %}"></script>
+  </body>
+</html>
