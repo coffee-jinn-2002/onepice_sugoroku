@@ -109,18 +109,20 @@ const characters = [
           }
         }
       },
-      resetGameState() {
-        axios.put('/api/gamestate/1/', {
+      async resetGameState() {
+        await axios.put('/api/gamestate/1/', {
           player_position: 1,
           cpu_position: 1,
           is_player_turn: true,
           is_game_over: false,
           dice: 0
         });
-      }
+    
+        // リセット後にデータを再取得
+        this.fetchGameState();
+      },
     },
     mounted() {
       this.resetGameState();
-      this.fetchGameState();
     },
   });
